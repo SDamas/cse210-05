@@ -1,5 +1,6 @@
 from game.casting.actor import Actor
 from game.shared.point import Point
+import constants
 
 class Score(Actor):
     """
@@ -16,10 +17,13 @@ class Score(Actor):
         super().__init__()
         self._points = 0
         self._player = player
+        self._position = Point(0,0)
 
         if self._player == 1:
             self._text = "Player One"
-        else: self._text = "Player Two"
+        else: 
+            self._text = "Player Two" 
+            self._position = constants.PLAYER_2_SCORE 
         self.add_points(0)
 
     def add_points(self, points):

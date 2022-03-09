@@ -1,3 +1,4 @@
+from numpy import number
 import constants
 from game.casting.actor import Actor
 from game.shared.point import Point
@@ -12,7 +13,7 @@ class Snake(Actor):
     Attributes:
         _points (int): The number of points the food is worth.
     """
-    def __init__(self, player=1):
+    def __init__(self, player):
         super().__init__()
         self._segments = []
         self._player = player
@@ -36,18 +37,21 @@ class Snake(Actor):
         return self._segments[0]
 
     def grow_tail(self, number_of_segments):
-        for i in range(number_of_segments):
-            tail = self._segments[-1]
-            velocity = tail.get_velocity()
-            offset = velocity.reverse()
-            position = tail.get_position().add(offset)
-            
-            segment = Actor()
-            segment.set_position(position)
-            segment.set_velocity(velocity)
-            segment.set_text("#")
-            segment.set_color(constants.GREEN)
-            self._segments.append(segment)
+        if not self._segments[0].get_color() == constants.WHITE:
+            for i in range(number_of_segments):
+                tail = self._segments[-1]
+                velocity = tail.get_velocity()
+                offset = velocity.reverse()
+                position = tail.get_position().add(offset)
+                
+                segment = Actor()
+                segment.set_position(position)
+                segment.set_velocity(velocity)
+                segment.set_text("#")
+                if self._player == constants.PLAYER_1:
+                    segment.set_color(constants.RED)
+                else: segment.set_color(constants.GREEN)
+                self._segments.append(segment)
 
     def turn_head(self, velocity):
         self._segments[0].set_velocity(velocity)
@@ -55,10 +59,10 @@ class Snake(Actor):
     def _prepare_body(self):
         
         if self._player == 1:
-            x = int(constants.MAX_X - 200)
+            x = int(constants.MAX_X - 700)
             y = int(constants.MAX_Y - 100)
         elif self._player == 2:
-            x = int(constants.MAX_X - 700)
+            x = int(constants.MAX_X - 200)
             y = int(constants.MAX_Y - 100)
 
         for i in range(constants.SNAKE_LENGTH):
@@ -66,8 +70,8 @@ class Snake(Actor):
             velocity = Point(0, -1 * constants.CELL_SIZE)
             text = "8" if i == 0 else "#"
             if self._player == 1:
-                color = constants.GREEN
-            else: color = constants.RED
+                color = constants.RED
+            else: color = constants.GREEN
             
             segment = Actor()
             segment.set_position(position)

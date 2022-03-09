@@ -73,7 +73,9 @@ class ControlActorsAction(Action):
         for key in player_1_direction:
             if self._keyboard_service.is_key_down(key):
                 player_1.turn_head(self._direction_player_1)
+                player_1.grow_tail(1)
 
         for key in player_2_direction:
             if self._keyboard_service.is_key_down(key):
                 player_2.turn_head(self._direction_player_2)
+                player_2.grow_tail(1)

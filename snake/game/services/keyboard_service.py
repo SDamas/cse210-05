@@ -41,4 +41,4 @@ class KeyboardService:
             key (string): The given key (w, a, s, d or i, j, k, l)
         """
         pyray_key = self._keys[key.lower()]
-        return pyray.is_key_down(pyray_key)
+        return pyray.is_key_pressed(pyray_key)
