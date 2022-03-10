@@ -62,22 +62,32 @@ class HandleCollisionsAction(Action):
         """
         snakes = cast.get_actors("snakes")
 
-        # snake 1 information
+        # snake 1 segments and head information
         snake_1_head = snakes[0].get_head()
         snake_1_segments = snakes[0].get_segments()[1:]
 
-        # snake 2 information
+        # snake 2 segments and head information
         snake_2_head = snakes[1].get_head()
         snake_2_segments = snakes[1].get_segments()[1:]
 
         for segment in snake_1_segments:
-            if (snake_2_head.get_position()).equals(segment.get_position()) or (snake_1_head.get_position()).equals(segment.get_position()):
+            
+            if self._headCollided(snake_1_head, segment) or self._headCollided(snake_2_head, segment):
                 print(f"Game is over!{emoji.emojize(':winking_face_with_tongue:')}")
                 self._is_game_over = True
+
         for segment in snake_2_segments:
-            if (snake_2_head.get_position()).equals(segment.get_position()) or (snake_1_head.get_position()).equals(segment.get_position()):
+
+            if self._headCollided(snake_2_head, segment) or self._headCollided(snake_1_head, segment):
                 print(f"Game is over!{emoji.emojize(':winking_face_with_tongue:')}")
                 self._is_game_over = True 
+
+    def _headCollided(self, head, segment):
+        """
+        Check if there was a collision between snake's head and the segment.
+        """
+        if head.get_position().equals(segment.get_position()):
+            return True
 
     def _handle_game_over(self, cast):
         """Shows the 'game over' message and turns the snake and food white if the game is over.
