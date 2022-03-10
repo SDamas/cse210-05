@@ -59,11 +59,11 @@ class Snake(Actor):
     def _prepare_body(self):
         
         if self._player == 1:
-            x = int(constants.MAX_X - 700)
-            y = int(constants.MAX_Y - 100)
+            x = int(constants.MAX_X / 4)
+            y = int(constants.MAX_Y / 2)
         elif self._player == 2:
-            x = int(constants.MAX_X - 200)
-            y = int(constants.MAX_Y - 100)
+            x = int(constants.MAX_X / 2)
+            y = int(constants.MAX_Y / 2)
 
         for i in range(constants.SNAKE_LENGTH):
             position = Point(x, y + i * constants.CELL_SIZE)

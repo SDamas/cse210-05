@@ -1,3 +1,5 @@
+import emoji
+from re import S
 import constants
 from game.casting.actor import Actor
 from game.scripting.action import Action
@@ -42,16 +44,15 @@ class HandleCollisionsAction(Action):
         snake = cast.get_first_actor("snakes")
         head = snake.get_head()
 
-        # player_1 = snakes[0]
-        # # player_2 =
-        # for snake, index in snakes:
-        #     head = snake.get_head()
-        #     other_snake_segments = snake[index+1]
-        #     if head.get_position().equals(food.get_position()):
-        #         points = food.get_points()
-        #         snake.grow_tail(points)
-        #         score.add_points(points)
-        #         food.reset()
+        player_1 = snakes[0]
+        # player_2 =
+        for snake in snakes:
+            head = snake.get_head()
+            if head.get_position().equals(food.get_position()):
+                points = food.get_points()
+                snake.grow_tail(points)
+                score.add_points(points)
+                food.reset()
     
     def _handle_segment_collision(self, cast):
         """Sets the game over flag if the snake collides with one of its segments.
@@ -60,18 +61,24 @@ class HandleCollisionsAction(Action):
             cast (Cast): The cast of Actors in the game.
         """
         snakes = cast.get_actors("snakes")
-        # snake_1_segments = snakes[0].get_segments()[1:]
-        # snake_1_head = snake_1_segments.get_segments()[0]
-        # snake_2_segments = snakes[1].get_segments()[1:]
-        # snake_2_head = snake_2_segments.get_segments()[0]
-        
-        for snake in snakes:
-            segments = snake.get_segments()[1:]
-            head = snake.get_segments()[0]
-            for segment in segments:
-                if head.get_position().equals(segment.get_position()):
-                    self._is_game_over = True
-        
+
+        # snake 1 information
+        snake_1_head = snakes[0].get_head()
+        snake_1_segments = snakes[0].get_segments()[1:]
+
+        # snake 2 information
+        snake_2_head = snakes[1].get_head()
+        snake_2_segments = snakes[1].get_segments()[1:]
+
+        for segment in snake_1_segments:
+            if (snake_2_head.get_position()).equals(segment.get_position()) or (snake_1_head.get_position()).equals(segment.get_position()):
+                print(f"Game is over!{emoji.emojize(':winking_face_with_tongue:')}")
+                self._is_game_over = True
+        for segment in snake_2_segments:
+            if (snake_2_head.get_position()).equals(segment.get_position()) or (snake_1_head.get_position()).equals(segment.get_position()):
+                print(f"Game is over!{emoji.emojize(':winking_face_with_tongue:')}")
+                self._is_game_over = True 
+
     def _handle_game_over(self, cast):
         """Shows the 'game over' message and turns the snake and food white if the game is over.
         
@@ -88,7 +95,7 @@ class HandleCollisionsAction(Action):
             position = Point(x, y)
 
             message = Actor()
-            message.set_text("Game Over!")
+            message.set_text("Game is Over! But, why not try again? Bring your opponent back!")
             message.set_position(position)
             cast.add_actor("messages", message)
 
