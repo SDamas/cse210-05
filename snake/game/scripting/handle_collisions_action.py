@@ -62,23 +62,21 @@ class HandleCollisionsAction(Action):
         """
         snakes = cast.get_actors("snakes")
 
-        # snake 1 segments and head information
-        snake_1_head = snakes[0].get_head()
-        snake_1_segments = snakes[0].get_segments()[1:]
+        snake_1 = {"head": snakes[0].get_head(),
+                   "segments": snakes[0].get_segments()[1:]}
 
-        # snake 2 segments and head information
-        snake_2_head = snakes[1].get_head()
-        snake_2_segments = snakes[1].get_segments()[1:]
+        snake_2 = {"head": snakes[1].get_head(),
+                   "segments": snakes[1].get_segments()[1:]}
 
-        for segment in snake_1_segments:
-            
-            if self._headCollided(snake_1_head, segment) or self._headCollided(snake_2_head, segment):
+        for segment in snake_1["segments"]:
+
+            if self._headCollided(snake_1["head"], segment) or self._headCollided(snake_2["head"], segment):
                 print(f"Game is over!{emoji.emojize(':winking_face_with_tongue:')}")
                 self._is_game_over = True
 
-        for segment in snake_2_segments:
+        for segment in snake_2["segments"]:
 
-            if self._headCollided(snake_2_head, segment) or self._headCollided(snake_1_head, segment):
+            if self._headCollided(snake_2["head"], segment) or self._headCollided(snake_1["head"], segment):
                 print(f"Game is over!{emoji.emojize(':winking_face_with_tongue:')}")
                 self._is_game_over = True 
 
